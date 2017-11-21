@@ -61,6 +61,8 @@
      <Compile Include="Assets\src\connection\WebSocketConnector.cs" />
      <Compile Include="Assets\src\connection\WebsocketPackage.cs" />
      <Compile Include="Assets\src\debug\Debugger.cs" />
+     <Compile Include="Assets\src\location\DomainRoot.cs" />
+     <Compile Include="Assets\src\location\LocatorEvent.cs" />
  <Reference Include="UnityEngine.UIAutomation">
  <HintPath>/Applications/Unity/Unity.app/Contents/UnityExtensions/Unity/UIAutomation/UnityEngine.UIAutomation.dll</HintPath>
  </Reference>
