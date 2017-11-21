@@ -1,0 +1,11 @@
+{
+"TOTAL_MEMORY": 268435456,
+"dataUrl": "arena_3d_socket.data.unityweb",
+"asmCodeUrl": "arena_3d_socket.asm.code.unityweb",
+"asmMemoryUrl": "arena_3d_socket.asm.memory.unityweb",
+"asmFrameworkUrl": "arena_3d_socket.asm.framework.unityweb",
+"graphicsAPI": ["WebGL 2.0", "WebGL 1.0"],
+"webglContextAttributes": {"preserveDrawingBuffer": false},
+"splashScreenStyle": "Dark",
+"backgroundColor": "#231F20"
+}

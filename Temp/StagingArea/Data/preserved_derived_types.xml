@@ -1,0 +1,11 @@
+<linker>
+<assembly fullname="Assembly-CSharp">
+<type fullname="Connection" preserve="all"/>
+<type fullname="PhoenixSocketConnector" preserve="all"/>
+<type fullname="WebsocketConnector" preserve="all"/>
+<type fullname="Debugger" preserve="all"/>
+</assembly>
+<assembly fullname="UnityEngine.Analytics">
+<type fullname="UnityEngine.Analytics.AnalyticsTracker" preserve="all"/>
+</assembly>
+</linker>

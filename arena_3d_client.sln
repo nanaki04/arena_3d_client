@@ -1,0 +1,29 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "arena_3d_client", "Assembly-CSharp.csproj", "{FE74AD49-C5D6-5DBE-6279-9E216A0275F2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "arena_3d_client", "Assembly-CSharp-firstpass.csproj", "{BF7BB5C9-DA67-4E2A-7C6C-F023100E73CB}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{FE74AD49-C5D6-5DBE-6279-9E216A0275F2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FE74AD49-C5D6-5DBE-6279-9E216A0275F2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FE74AD49-C5D6-5DBE-6279-9E216A0275F2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FE74AD49-C5D6-5DBE-6279-9E216A0275F2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BF7BB5C9-DA67-4E2A-7C6C-F023100E73CB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BF7BB5C9-DA67-4E2A-7C6C-F023100E73CB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BF7BB5C9-DA67-4E2A-7C6C-F023100E73CB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BF7BB5C9-DA67-4E2A-7C6C-F023100E73CB}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(MonoDevelopProperties) = preSolution
+		StartupItem = Assembly-CSharp.csproj
+	EndGlobalSection
+EndGlobal
