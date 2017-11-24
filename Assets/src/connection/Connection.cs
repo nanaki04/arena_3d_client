@@ -8,9 +8,6 @@ public class Connection : MonoBehaviour {
   private Connector<PhoenixSocketMessage> connector;
 
   public IEnumerator Start() {
-    string msg = World.print("Hello World");
-    Debug.Log(msg);
-    Debug.Log("start connector");
     connector = gameObject.AddComponent<PhoenixSocketConnector>() as PhoenixSocketConnector;
     connector.onConnected(onConnect);
     connector.receive(onReceive);
