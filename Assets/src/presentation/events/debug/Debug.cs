@@ -11,7 +11,7 @@ namespace Arena.Presentation {
 
   public class DebugEventImplementation : EventImplementation {
     public DebugEventImplementation() {
-      Actions = Actions
+      Composition = EventComposition.EventComposer
         + PrintMessage;
     }
 

@@ -30,29 +30,35 @@ namespace Arena.Modules {
 
   public class Locator {
     Dictionary<string, Dictionary<string, LocatorTarget>> RegistrationList;
-    Converter<PlugState, PlugState> Transformers;
-    Converter<LocatorTarget, LocatorTarget> Wrappers;
+    List<LocatorPlug> Plugs;
 
     public Locator(
       Dictionary<string, Dictionary<string, LocatorTarget>> registrationList,
       List<LocatorPlug> plugs
     ) {
       RegistrationList = registrationList;
-      if (plugs.Count == 0) {
-        Transformers += new Converter<PlugState, PlugState>(TransformIdentity);
-        Wrappers += new Converter<LocatorTarget, LocatorTarget>(WrapperIdentity);
-      }
-      foreach (LocatorPlug plug in plugs) {
-        Transformers += new Converter<PlugState, PlugState>(plug.Transform);
-        Wrappers += new Converter<LocatorTarget, LocatorTarget>(plug.Wrap);
-      }
+      Plugs = plugs;
     }
 
     public LocatorTarget Locate(string domain, string address) {
       var plugState = CreatePlugState(domain, address);
-      plugState = Transformers(plugState);
+      plugState = Transform(plugState);
       var locatorTarget = GetTarget(plugState);
-      return Wrappers(locatorTarget);
+      return Wrap(locatorTarget);
+    }
+
+    private PlugState Transform(PlugState plugState) {
+      foreach (LocatorPlug plug in Plugs) {
+        plugState = plug.Transform(plugState);
+      }
+      return plugState;
+    }
+
+    private LocatorTarget Wrap(LocatorTarget target) {
+      foreach (LocatorPlug plug in Plugs) {
+        target = plug.Wrap(target);
+      }
+      return target;
     }
 
     private Dictionary<string, LocatorTarget> GetTargetList(

@@ -60,6 +60,7 @@
      <Compile Include="Assets\src\connection\PhoenixSocketPayload.cs" />
      <Compile Include="Assets\src\connection\WebSocketConnector.cs" />
      <Compile Include="Assets\src\connection\WebsocketPackage.cs" />
+     <Compile Include="Assets\src\modules\Composition.cs" />
      <Compile Include="Assets\src\modules\Locator.cs" />
      <Compile Include="Assets\src\presentation\data\EventArchive.cs" />
      <Compile Include="Assets\src\presentation\data\EventStore.cs" />
@@ -72,6 +73,7 @@
      <Compile Include="Assets\src\presentation\definitions\PopupList.cs" />
      <Compile Include="Assets\src\presentation\events\debug\Debug.cs" />
      <Compile Include="Assets\src\presentation\events\Event.cs" />
+     <Compile Include="Assets\src\presentation\events\EventComposer.cs" />
      <Compile Include="Assets\src\presentation\events\EventHandler.cs" />
      <Compile Include="Assets\src\presentation\events\mypage\ShowMail.cs" />
      <Compile Include="Assets\src\presentation\input\EventParameters.cs" />
@@ -81,6 +83,7 @@
      <Compile Include="Assets\src\view\debug\Debugger.cs" />
      <Compile Include="Assets\src\view\location\DomainRoot.cs" />
      <Compile Include="Assets\src\view\location\LocatorEvent.cs" />
+     <Compile Include="Assets\src\view\popup\PopupPaths.cs" />
      <Compile Include="Assets\src\view\rendering\OpenPopup.cs" />
      <Compile Include="Assets\src\view\rendering\Print.cs" />
      <Compile Include="Assets\src\view\rendering\PublicRenderer.cs" />

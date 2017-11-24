@@ -10,10 +10,10 @@ namespace Arena.Presentation {
   }
 
   public abstract class EventImplementation {
-    protected Converter<State, State> Actions;
+    protected Note<State> Composition;
     public abstract Event Create(EventParameters eventParameters);
     public virtual State Handle(State state) {
-      return Actions(state);
+      return Composition.Play(state);
     }
   }
 
