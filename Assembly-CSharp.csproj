@@ -70,12 +70,16 @@
      <Compile Include="Assets\src\presentation\data\Player.cs" />
      <Compile Include="Assets\src\presentation\data\Projectile.cs" />
      <Compile Include="Assets\src\presentation\data\State.cs" />
+     <Compile Include="Assets\src\presentation\data\UIState.cs" />
      <Compile Include="Assets\src\presentation\definitions\PopupList.cs" />
      <Compile Include="Assets\src\presentation\events\debug\Debug.cs" />
      <Compile Include="Assets\src\presentation\events\Event.cs" />
      <Compile Include="Assets\src\presentation\events\EventComposer.cs" />
      <Compile Include="Assets\src\presentation\events\EventHandler.cs" />
      <Compile Include="Assets\src\presentation\events\mypage\ShowMail.cs" />
+     <Compile Include="Assets\src\presentation\events\popup\ClosePopup.cs" />
+     <Compile Include="Assets\src\presentation\events\popup\OpenPopup.cs" />
+     <Compile Include="Assets\src\presentation\events\popup\PopupOverlayTick.cs" />
      <Compile Include="Assets\src\presentation\input\EventParameters.cs" />
      <Compile Include="Assets\src\presentation\input\Locator.cs" />
      <Compile Include="Assets\src\presentation\output\RenderCommand.cs" />
@@ -83,10 +87,11 @@
      <Compile Include="Assets\src\view\debug\Debugger.cs" />
      <Compile Include="Assets\src\view\location\DomainRoot.cs" />
      <Compile Include="Assets\src\view\location\LocatorEvent.cs" />
-     <Compile Include="Assets\src\view\popup\PopupPaths.cs" />
-     <Compile Include="Assets\src\view\rendering\OpenPopup.cs" />
+     <Compile Include="Assets\src\view\location\LocatorTickEvent.cs" />
+     <Compile Include="Assets\src\view\popup\PopupHandler.cs" />
      <Compile Include="Assets\src\view\rendering\Print.cs" />
      <Compile Include="Assets\src\view\rendering\PublicRenderer.cs" />
+     <Compile Include="Assets\src\view\rendering\RenderPopups.cs" />
  <Reference Include="UnityEngine.UIAutomation">
  <HintPath>/Applications/Unity/Unity.app/Contents/UnityExtensions/Unity/UIAutomation/UnityEngine.UIAutomation.dll</HintPath>
  </Reference>

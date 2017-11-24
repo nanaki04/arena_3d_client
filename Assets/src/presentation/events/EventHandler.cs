@@ -21,7 +21,10 @@ namespace Arena.Presentation {
     public static Dictionary<string, EventImplementation> EventImplementations =
       new Dictionary<string, EventImplementation>() {
         { ShowMailEvent.Type, new ShowMailEventImplementation() },
-        { DebugEvent.Type, new DebugEventImplementation() }
+        { DebugEvent.Type, new DebugEventImplementation() },
+        { PopupOverlayTickEvent.Type, new PopupOverlayTickEventImplementation() },
+        { OpenPopupEvent.Type, new OpenPopupEventImplementation() },
+        { ClosePopupEvent.Type, new ClosePopupEventImplementation() }
       };
 
     protected EventHandlerType type;
@@ -51,8 +54,10 @@ namespace Arena.Presentation {
         var evnt = eventImplementation.Create(eventParameters);
         var state = Store.LoadState(evnt);
         state = eventImplementation.Handle(state);
+        var renderData = Store.GetRenderData(state);
+        state = Store.ClearRenderData(state);
         state = Store.SaveState(state);
-        return Store.GetRenderData(state);
+        return renderData;
       }
     }
 
@@ -70,8 +75,10 @@ namespace Arena.Presentation {
         var evnt = eventImplementation.Create(eventParameters);
         var state = Store.LoadState(evnt);
         state = Store.PushProcessingEventToEventStore(state);
+        var renderData = Store.GetRenderData(state);
+        state = Store.ClearRenderData(state);
         state = Store.SaveState(state);
-        return Store.GetRenderData(state);
+        return renderData;
       }
     }
   }

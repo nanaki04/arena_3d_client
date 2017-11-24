@@ -8,6 +8,7 @@ namespace Arena.Presentation {
     public EventStore ActiveEventStore;
     public List<EventArchive> EventArchives;
     public GameState CurrentGameState;
+    public UIState CurrentUIState;
     public List<RenderCommand> RenderData;
 
     public State(
@@ -16,6 +17,7 @@ namespace Arena.Presentation {
       EventStore eventStore,
       List<EventArchive> eventArchives,
       GameState gameState,
+      UIState uiState,
       List<RenderCommand> renderData
     ) {
       Me = me;
@@ -23,6 +25,7 @@ namespace Arena.Presentation {
       ActiveEventStore = eventStore;
       EventArchives = eventArchives;
       CurrentGameState = gameState;
+      CurrentUIState = uiState;
       RenderData = renderData;
     }
 
@@ -33,6 +36,7 @@ namespace Arena.Presentation {
         EventStore.InitialState(),
         new List<EventArchive>(),
         GameState.InitialState(),
+        UIState.InitialState(),
         new List<RenderCommand>()
       );
     }

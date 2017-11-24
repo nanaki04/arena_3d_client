@@ -39,8 +39,9 @@ GameObject:
   - component: {fileID: 222435937211368814}
   - component: {fileID: 114383568779597670}
   - component: {fileID: 114683940433126098}
+  - component: {fileID: 114051153010719334}
   m_Layer: 5
-  m_Name: Button
+  m_Name: Ok Button
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -76,6 +77,7 @@ GameObject:
   - component: {fileID: 114965578732767212}
   - component: {fileID: 114491696337608888}
   - component: {fileID: 114713664283973984}
+  - component: {fileID: 114353454797041434}
   m_Layer: 5
   m_Name: DummyPopup
   m_TagString: Untagged
@@ -162,13 +164,27 @@ GameObject:
   - component: {fileID: 222833998794400496}
   - component: {fileID: 114304545208306898}
   - component: {fileID: 114678843988873944}
+  - component: {fileID: 114617954669848900}
   m_Layer: 5
-  m_Name: Button (1)
+  m_Name: Cancel Button
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!114 &114051153010719334
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1116436707691346}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cfef17b2a14454f57b15377207ec0e8d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  address: ok
+  fireOnStart: 0
 --- !u!114 &114243157230587304
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -284,6 +300,18 @@ MonoBehaviour:
     m_VerticalOverflow: 0
     m_LineSpacing: 1
   m_Text: OK
+--- !u!114 &114353454797041434
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1354153748130724}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fc8032a004e3347c38abcf26e85d61fc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  domain: dummy_popup
 --- !u!114 &114383568779597670
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -403,6 +431,19 @@ MonoBehaviour:
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
+--- !u!114 &114617954669848900
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1862525985611608}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cfef17b2a14454f57b15377207ec0e8d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  address: cancel
+  fireOnStart: 0
 --- !u!114 &114678843988873944
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -441,7 +482,18 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 114304545208306898}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 114617954669848900}
+        m_MethodName: fireEvent
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
 --- !u!114 &114683940433126098
@@ -482,7 +534,18 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 114383568779597670}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 114051153010719334}
+        m_MethodName: fireEvent
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
 --- !u!114 &114691161839443134
@@ -660,7 +723,7 @@ RectTransform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1354153748130724}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:

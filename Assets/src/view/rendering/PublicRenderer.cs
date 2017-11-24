@@ -3,23 +3,28 @@ using Arena.Presentation;
 using System;
 using System.Collections.Generic;
 
-public static class PublicRenderer {
+namespace Arena.View {
 
-  private static Dictionary<RenderCommandType, Action<GameObject, RenderCommand>> renderers =
-    new Dictionary<RenderCommandType, Action<GameObject, RenderCommand>>() {
-      { RenderCommandType.Print, Print.Render }
-    };
+  public static class PublicRenderer {
 
-  public static void Render(GameObject gameObject, List<RenderCommand> renderData) {
-    foreach(RenderCommand renderCommand in renderData)
-      HandleRenderCommand(gameObject, renderCommand);
-  }
+    private static Dictionary<RenderCommandType, Action<GameObject, RenderCommand>> renderers =
+      new Dictionary<RenderCommandType, Action<GameObject, RenderCommand>>() {
+        { RenderCommandType.Print, Print.Render },
+        { RenderCommandType.RenderPopups, RenderPopups.Render }
+      };
 
-  private static void HandleRenderCommand(GameObject gameObject, RenderCommand renderCommand) {
-    if (renderers.ContainsKey(renderCommand.Type)) {
-      var render = renderers[renderCommand.Type];
-      render(gameObject, renderCommand);
+    public static void Render(GameObject gameObject, List<RenderCommand> renderData) {
+      foreach(RenderCommand renderCommand in renderData)
+        HandleRenderCommand(gameObject, renderCommand);
     }
+
+    private static void HandleRenderCommand(GameObject gameObject, RenderCommand renderCommand) {
+      if (renderers.ContainsKey(renderCommand.Type)) {
+        var render = renderers[renderCommand.Type];
+        render(gameObject, renderCommand);
+      }
+    }
+
   }
 
 }

@@ -9,9 +9,22 @@ namespace Arena.Presentation {
         { "show", ShowMailEvent.Run }
       };
 
+    private static Dictionary<string, LocatorTarget> popupTargetList =
+      new Dictionary<string, LocatorTarget>() {
+        { "tick", PopupOverlayTickEvent.Run }
+      };
+
+    private static Dictionary<string, LocatorTarget> dummyPopupTargetList =
+      new Dictionary<string, LocatorTarget>() {
+        { "ok", ClosePopupEvent.Run },
+        { "cancel", ClosePopupEvent.Run }
+      };
+
     private static Dictionary<string, Dictionary<string, LocatorTarget>> RegistrationList =
       new Dictionary<string, Dictionary<string, LocatorTarget>>() {
-        { "mypage", mypageTargetList }
+        { "mypage", mypageTargetList },
+        { "popup", popupTargetList },
+        { "dummy_popup", dummyPopupTargetList }
       };
 
     private static List<LocatorPlug> Plugs =

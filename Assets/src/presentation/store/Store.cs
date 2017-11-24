@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using UnityEngine;
 
 namespace Arena.Presentation {
 
@@ -6,7 +7,7 @@ namespace Arena.Presentation {
     private static State ActiveState = State.InitialState();
 
     public static State LoadState(Event processing) {
-      return ActiveState;
+      return UpdateProcessing(processing, ActiveState);
     }
 
     public static State SaveState(State state) {
@@ -43,6 +44,15 @@ namespace Arena.Presentation {
       return state.CurrentGameState;
     }
 
+    public static UIState GetUIState(State state) {
+      return state.CurrentUIState;
+    }
+
+    public static List<PopupType> GetOpenPopups(State state) {
+      var uiState = GetUIState(state);
+      return new List<PopupType>(uiState.Popups);
+    }
+
     public static State UpdateMe(string me, State state) {
       state.Me = me;
       return state;
@@ -74,9 +84,40 @@ namespace Arena.Presentation {
       return state;
     }
 
+    public static State UpdateUIState(UIState uiState, State state) {
+      state.CurrentUIState = uiState;
+      return state;
+    }
+
     public static State UpdateRenderData(List<RenderCommand> renderData, State state) {
       state.RenderData = renderData;
       return state;
+    }
+
+    public static State ClearRenderData(State state) {
+      return UpdateRenderData(new List<RenderCommand>(), state);
+    }
+
+    public static State UpdateOpenPopups(List<PopupType> openPopups, State state) {
+      var uiState = GetUIState(state);
+      uiState.Popups = openPopups;
+      return UpdateUIState(uiState, state);
+    }
+
+    public static State RemoveLastOpenedPopup(State state) {
+      var openPopups = GetOpenPopups(state);
+      var index = openPopups.Count - 1;
+      if (index < 0) {
+        return state;
+      }
+      openPopups.RemoveAt(index);
+      return UpdateOpenPopups(openPopups, state);
+    }
+
+    public static State RemoveOpenedPopup(PopupType popupType, State state) {
+      var openPopups = GetOpenPopups(state);
+      openPopups.Remove(popupType);
+      return UpdateOpenPopups(openPopups, state);
     }
 
     public static State PushEventToEventStore(Event evnt, State state) {
@@ -88,6 +129,15 @@ namespace Arena.Presentation {
     public static State PushProcessingEventToEventStore(State state) {
       var evnt = GetProcessing(state);
       return PushEventToEventStore(evnt, state);
+    }
+
+    public static State PushOpenPopup(PopupType popupType, State state) {
+      var openPopups = GetOpenPopups(state);
+      if (openPopups.Contains(popupType)) {
+        return state;
+      }
+      openPopups.Add(popupType);
+      return UpdateOpenPopups(openPopups, state);
     }
 
     public static State PushRenderCommand(RenderCommand renderCommand, State state) {

@@ -1,3 +1,5 @@
+using UnityEngine;
+
 namespace Arena.Presentation {
 
   public class ShowMailEvent : Event {
@@ -9,8 +11,10 @@ namespace Arena.Presentation {
   public class ShowMailEventImplementation : EventImplementation {
     public ShowMailEventImplementation() {
       Composition = EventComposition.EventComposer
+        + OpenPopup
         + PrintMessage
-        + Append;
+        + Append
+        ;
     }
 
     public override Event Create(EventParameters eventParameters) {
@@ -18,9 +22,11 @@ namespace Arena.Presentation {
       return new ShowMailEvent(eventId);
     }
 
+    private State OpenPopup(State state) {
+      return Store.PushOpenPopup(PopupType.Dummy, state);
+    }
+
     private State PrintMessage(State state) {
-      //var renderCommand = new RenderCommand.Print("54");
-      //return Store.PushRenderCommand(renderCommand, state);
       return Store.UpdateMe("hi ", state);
     }
 

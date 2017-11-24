@@ -8,7 +8,8 @@ namespace Arena.Presentation {
     Index,
     Page,
     RecordsPerPage,
-    Message
+    Message,
+    Popup
   }
 
   public abstract class EventParameter {
@@ -67,6 +68,15 @@ namespace Arena.Presentation {
         Type = EventParameterType.Message;
       }
     }
+
+    public class Popup : EventParameter {
+      public PopupType Val { get; }
+
+      public Popup(PopupType val) {
+        Val = val;
+        Type = EventParameterType.Popup;
+      }
+    }
   }
 
   public class EventParameters {
@@ -78,6 +88,12 @@ namespace Arena.Presentation {
 
     public EventParameters(List<EventParameter> parameters) {
       Parameters = parameters;
+    }
+
+    public EventParameters Push(EventParameter parameter) {
+      var list = new List<EventParameter>(Parameters);
+      list.Add(parameter);
+      return new EventParameters(list);
     }
   }
 }

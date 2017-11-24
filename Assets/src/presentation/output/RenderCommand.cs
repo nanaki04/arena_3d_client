@@ -1,9 +1,10 @@
+using System.Collections.Generic;
+
 namespace Arena.Presentation {
 
   public enum RenderCommandType {
     Print,
-    OpenPopup,
-    ClosePopup,
+    RenderPopups,
     Debug,
     Error
   }
@@ -20,21 +21,12 @@ namespace Arena.Presentation {
       }
     }
 
-    public class OpenPopup : RenderCommand {
-      public PopupType Popup { get; }
+    public class RenderPopups : RenderCommand {
+      public List<PopupType> OpenPopups { get; }
 
-      public OpenPopup(PopupType popup) {
-        Popup = popup;
-        Type = RenderCommandType.OpenPopup;
-      }
-    }
-
-    public class ClosePopup : RenderCommand {
-      public PopupType Popup { get; }
-
-      public ClosePopup(PopupType popup) {
-        Popup = popup;
-        Type = RenderCommandType.ClosePopup;
+      public RenderPopups(List<PopupType> openPopups) {
+        OpenPopups = openPopups;
+        Type = RenderCommandType.RenderPopups;
       }
     }
 
