@@ -9,11 +9,20 @@ namespace Arena.Presentation {
     Page,
     RecordsPerPage,
     Message,
-    Popup
+    Popup,
+    RadioButton
   }
 
   public abstract class EventParameter {
     public EventParameterType Type { get; set; }
+
+    public static EventParameters operator +(EventParameter parameter1, EventParameter parameter2) {
+      var parameterList = new List<EventParameter>() {
+        parameter1,
+        parameter2
+      };
+      return new EventParameters(parameterList);
+    }
 
     public class Id : EventParameter {
       public string Val { get; }
@@ -77,6 +86,15 @@ namespace Arena.Presentation {
         Type = EventParameterType.Popup;
       }
     }
+
+    public class RadioButton : EventParameter {
+      public int Val { get; }
+
+      public RadioButton(int val) {
+        Val = val;
+        Type = EventParameterType.RadioButton;
+      }
+    }
   }
 
   public class EventParameters {
@@ -94,6 +112,17 @@ namespace Arena.Presentation {
       var list = new List<EventParameter>(Parameters);
       list.Add(parameter);
       return new EventParameters(list);
+    }
+
+    public static EventParameters operator +(EventParameters parameters, EventParameter parameter) {
+      return parameters.Push(parameter);
+    }
+
+    public static EventParameters operator +(EventParameters parameters1, EventParameters parameters2) {
+      foreach (EventParameter parameter in parameters2.Parameters) {
+        parameters1 += parameter;
+      }
+      return parameters1;
     }
   }
 }

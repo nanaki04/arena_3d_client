@@ -1,4 +1,5 @@
 using UnityEngine;
+using Arena.Modules;
 
 namespace Arena.Presentation {
 
@@ -11,7 +12,7 @@ namespace Arena.Presentation {
   public class ShowMailEventImplementation : EventImplementation {
     public ShowMailEventImplementation() {
       Composition = EventComposition.EventComposer
-        + OpenPopup
+        + Store.Curry<PopupType>(Store.PushOpenPopup, PopupType.Dummy)
         + PrintMessage
         + Append
         ;

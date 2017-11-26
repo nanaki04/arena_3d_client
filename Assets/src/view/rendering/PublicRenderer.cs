@@ -10,6 +10,9 @@ namespace Arena.View {
     private static Dictionary<RenderCommandType, Action<GameObject, RenderCommand>> renderers =
       new Dictionary<RenderCommandType, Action<GameObject, RenderCommand>>() {
         { RenderCommandType.Print, Print.Render },
+        { RenderCommandType.Delegate, Delegate.Render },
+        { RenderCommandType.SelectRadioButton, SelectRadioButton.Render },
+        { RenderCommandType.LoadContent, LoadContent.Render },
         { RenderCommandType.RenderPopups, RenderPopups.Render }
       };
 

@@ -1,5 +1,7 @@
 using System.Collections.Generic;
+using System;
 using UnityEngine;
+using Arena.Modules;
 
 namespace Arena.Presentation {
 
@@ -13,6 +15,14 @@ namespace Arena.Presentation {
     public static State SaveState(State state) {
       ActiveState = state;
       return ActiveState;
+    }
+
+    public static Func<State, State> Curry<T>(Func<T, State, State> handler, T arg1) {
+      return Curry<T, State, State>.New(handler)(arg1);
+    }
+
+    public static Func<State, State> Curry<T1, T2>(Func<T1, T2, State, State> handler, T1 arg1, T2 arg2) {
+      return Curry<T1, T2, State, State>.New(handler)(arg1)(arg2);
     }
 
     public static List<RenderCommand> GetRenderData(State state) {
@@ -51,6 +61,19 @@ namespace Arena.Presentation {
     public static List<PopupType> GetOpenPopups(State state) {
       var uiState = GetUIState(state);
       return new List<PopupType>(uiState.Popups);
+    }
+
+    public static ImMap<string, int> GetSelectedRadioButtons(State state) {
+      var uiState = GetUIState(state);
+      return uiState.RadioButtons;
+    }
+
+    public static int GetSelectedRadioButton(string id, State state) {
+      var radioButtons = GetSelectedRadioButtons(state);
+      if (!radioButtons.Has(id)) {
+        return -1;
+      }
+      return radioButtons[id];
     }
 
     public static State UpdateMe(string me, State state) {
@@ -118,6 +141,18 @@ namespace Arena.Presentation {
       var openPopups = GetOpenPopups(state);
       openPopups.Remove(popupType);
       return UpdateOpenPopups(openPopups, state);
+    }
+
+    public static State UpdateRadioButtons(ImMap<string, int> radioButtons, State state) {
+      var uiState = GetUIState(state);
+      uiState.RadioButtons = radioButtons;
+      return UpdateUIState(uiState, state);
+    }
+
+    public static State UpdateSelectedRadioButton(string id, int index, State state) {
+      var selectedRadioButtons = GetSelectedRadioButtons(state);
+      selectedRadioButtons = selectedRadioButtons / id * index;
+      return UpdateRadioButtons(selectedRadioButtons, state);
     }
 
     public static State PushEventToEventStore(Event evnt, State state) {

@@ -1,36 +1,21 @@
 using System.Collections.Generic;
 using Arena.Modules;
+using UnityEngine;
 
 namespace Arena.Presentation {
 
   public static class EventLocator {
-    private static Dictionary<string, LocatorTarget> mypageTargetList =
-      new Dictionary<string, LocatorTarget>() {
-        { "show", ShowMailEvent.Run }
-      };
 
-    private static Dictionary<string, LocatorTarget> popupTargetList =
-      new Dictionary<string, LocatorTarget>() {
-        { "tick", PopupOverlayTickEvent.Run }
-      };
+    private static ImMap<string, ImMap<string, LocatorTarget>> RegistrationList =
+      Im.Map<ImMap<string, LocatorTarget>>()
+        / "mypage" * MypageLocatorList.List
+        / "popup" * PopupLocatorList.List
+        / "dummy_popup" * DummyPopupLocatorList.List
+        ;
 
-    private static Dictionary<string, LocatorTarget> dummyPopupTargetList =
-      new Dictionary<string, LocatorTarget>() {
-        { "ok", ClosePopupEvent.Run },
-        { "cancel", ClosePopupEvent.Run }
-      };
-
-    private static Dictionary<string, Dictionary<string, LocatorTarget>> RegistrationList =
-      new Dictionary<string, Dictionary<string, LocatorTarget>>() {
-        { "mypage", mypageTargetList },
-        { "popup", popupTargetList },
-        { "dummy_popup", dummyPopupTargetList }
-      };
-
-    private static List<LocatorPlug> Plugs =
-      new List<LocatorPlug>() {
-
-      };
+    private static ImList<LocatorPlug> Plugs =
+      new ImList<LocatorPlug>()
+        ;
 
     private static Locator locator = new Locator(RegistrationList, Plugs);
 

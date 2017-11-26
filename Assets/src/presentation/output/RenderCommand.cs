@@ -5,6 +5,9 @@ namespace Arena.Presentation {
   public enum RenderCommandType {
     Print,
     RenderPopups,
+    Delegate,
+    SelectRadioButton,
+    LoadContent,
     Debug,
     Error
   }
@@ -27,6 +30,30 @@ namespace Arena.Presentation {
       public RenderPopups(List<PopupType> openPopups) {
         OpenPopups = openPopups;
         Type = RenderCommandType.RenderPopups;
+      }
+    }
+
+    public class Delegate : RenderCommand {
+      public Delegate() {
+        Type = RenderCommandType.Delegate;
+      }
+    }
+
+    public class SelectRadioButton : RenderCommand {
+      public int Index { get; }
+
+      public SelectRadioButton(int index) {
+        Index = index;
+        Type = RenderCommandType.SelectRadioButton;
+      }
+    }
+
+    public class LoadContent : RenderCommand {
+      public int Index { get; }
+
+      public LoadContent(int index) {
+        Index = index;
+        Type = RenderCommandType.LoadContent;
       }
     }
 

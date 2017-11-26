@@ -1,8 +1,7 @@
 using System.Collections.Generic;
+using System;
 
 namespace Arena.Modules {
-
-  public delegate T Handler<T>(T input);
 
   public interface CompositionPlug<T> {
     T TransformIn(T input);
@@ -16,11 +15,11 @@ namespace Arena.Modules {
       Plugs = plugs;
     }
 
-    public Note<T> Compose(Handler<T> handler) {
+    public Note<T> Compose(Func<T, T> handler) {
       return new Note<T>(handler, Plugs);
     }
 
-    public static Note<T> operator +(Composer<T> composer, Handler<T> handler) {
+    public static Note<T> operator +(Composer<T> composer, Func<T, T> handler) {
       return composer.Compose(handler);
     }
   }
@@ -28,14 +27,14 @@ namespace Arena.Modules {
   public class Note<T> {
     public Note<T> Next { get; set; }
     public List<CompositionPlug<T>> Plugs { get; set; }
-    Handler<T> noteHandler;
+    Func<T, T> noteHandler;
 
-    public Note(Handler<T> handler) {
+    public Note(Func<T, T> handler) {
       noteHandler = handler;
       Plugs = new List<CompositionPlug<T>>();
     }
 
-    public Note(Handler<T> handler, List<CompositionPlug<T>> plugs) {
+    public Note(Func<T, T> handler, List<CompositionPlug<T>> plugs) {
       noteHandler = handler;
       Plugs = plugs;
     }
@@ -72,7 +71,7 @@ namespace Arena.Modules {
       return current;
     }
 
-    public static Note<T> operator +(Note<T> current, Handler<T> handler) {
+    public static Note<T> operator +(Note<T> current, Func<T, T> handler) {
       var next = new Note<T>(handler, current.Plugs);
       return current + next;
     }

@@ -6,7 +6,9 @@ namespace Arena.Presentation {
 
   public enum EventHandlerType {
     Run,
-    Stock
+    Stock,
+    RunFactory,
+    StockFactory
   }
 
   public abstract class EventImplementation {
@@ -24,6 +26,9 @@ namespace Arena.Presentation {
         { DebugEvent.Type, new DebugEventImplementation() },
         { PopupOverlayTickEvent.Type, new PopupOverlayTickEventImplementation() },
         { OpenPopupEvent.Type, new OpenPopupEventImplementation() },
+        { SelectRadioButtonEvent.Type, new SelectRadioButtonEventImplementation() },
+        { RestoreRadioButtonEvent.Type, new RestoreRadioButtonEventImplementation() },
+        { LoadTabContentEvent.Type, new LoadTabContentEventImplementation() },
         { ClosePopupEvent.Type, new ClosePopupEventImplementation() }
       };
 
@@ -61,6 +66,19 @@ namespace Arena.Presentation {
       }
     }
 
+    public class RunFactory : EventHandler.Run {
+      EventParameters CurriedParameters;
+
+      public RunFactory(string eventType, EventParameters curriedParameters) : base(eventType) {
+        CurriedParameters = curriedParameters;
+        type = EventHandlerType.RunFactory;
+      }
+
+      public override List<RenderCommand> Handle(EventParameters eventParameters) {
+        return base.Handle(CurriedParameters + eventParameters);
+      }
+    }
+
     public class Stock : EventHandler {
       public Stock(string eventType) {
         targetEventType = eventType;
@@ -81,6 +99,20 @@ namespace Arena.Presentation {
         return renderData;
       }
     }
+
+    public class StockFactory : EventHandler.Stock {
+      EventParameters CurriedParameters;
+
+      public StockFactory(string eventType, EventParameters curriedParameters) : base(eventType) {
+        CurriedParameters = curriedParameters;
+        type = EventHandlerType.StockFactory;
+      }
+
+      public override List<RenderCommand> Handle(EventParameters eventParameters) {
+        return base.Handle(CurriedParameters + eventParameters);
+      }
+    }
+
   }
 
 }

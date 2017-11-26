@@ -10,12 +10,12 @@ namespace Arena.Modules {
   public struct PlugState {
     public string Domain;
     public string Address;
-    public Dictionary<string, Dictionary<string, LocatorTarget>> RegistrationList;
+    public ImMap<string, ImMap<string, LocatorTarget>> RegistrationList;
 
     public PlugState(
       string domain,
       string address,
-      Dictionary<string, Dictionary<string, LocatorTarget>> registrationList
+      ImMap<string, ImMap<string, LocatorTarget>> registrationList
     ) {
       Domain = domain;
       Address = address;
@@ -29,12 +29,12 @@ namespace Arena.Modules {
   }
 
   public class Locator {
-    Dictionary<string, Dictionary<string, LocatorTarget>> RegistrationList;
-    List<LocatorPlug> Plugs;
+    public ImMap<string, ImMap<string, LocatorTarget>> RegistrationList { get; }
+    public ImList<LocatorPlug> Plugs { get; }
 
     public Locator(
-      Dictionary<string, Dictionary<string, LocatorTarget>> registrationList,
-      List<LocatorPlug> plugs
+      ImMap<string, ImMap<string, LocatorTarget>> registrationList,
+      ImList<LocatorPlug> plugs
     ) {
       RegistrationList = registrationList;
       Plugs = plugs;
@@ -48,34 +48,36 @@ namespace Arena.Modules {
     }
 
     private PlugState Transform(PlugState plugState) {
-      foreach (LocatorPlug plug in Plugs) {
-        plugState = plug.Transform(plugState);
-      }
-      return plugState;
+      return Im.Fold<LocatorPlug, PlugState>(TransformByPlug, plugState, Plugs);
+    }
+
+    private PlugState TransformByPlug(PlugState plugState, LocatorPlug plug) {
+      return plug.Transform(plugState);
     }
 
     private LocatorTarget Wrap(LocatorTarget target) {
-      foreach (LocatorPlug plug in Plugs) {
-        target = plug.Wrap(target);
-      }
-      return target;
+      return Im.Fold<LocatorPlug, LocatorTarget>(WrapByPlug, target, Plugs);
     }
 
-    private Dictionary<string, LocatorTarget> GetTargetList(
+    private LocatorTarget WrapByPlug(LocatorTarget target, LocatorPlug plug) {
+      return plug.Wrap(target);
+    }
+
+    private ImMap<string, LocatorTarget> GetTargetList(
       string domain,
-      Dictionary<string, Dictionary<string, LocatorTarget>> registrationList
+      ImMap<string, ImMap<string, LocatorTarget>> registrationList
     ) {
-      if (!registrationList.ContainsKey(domain)) {
-        return new Dictionary<string, LocatorTarget>();
+      if (!registrationList.Has(domain)) {
+        return Im.Map<LocatorTarget>();
       }
       return RegistrationList[domain];
     }
 
     private LocatorTarget GetTargetFromTargetList(
       string address,
-      Dictionary<string, LocatorTarget> targetList
+      ImMap<string, LocatorTarget> targetList
     ) {
-      if (!targetList.ContainsKey(address)) {
+      if (!targetList.Has(address)) {
         // MEMO: do error handling inside a plug
         return new LocatorTarget();
       }
