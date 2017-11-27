@@ -8,9 +8,9 @@ namespace Arena.Presentation {
 
     private static ImMap<string, ImMap<string, LocatorTarget>> RegistrationList =
       Im.Map<ImMap<string, LocatorTarget>>()
-        / "mypage" * MypageLocatorList.List
-        / "popup" * PopupLocatorList.List
-        / "dummy_popup" * DummyPopupLocatorList.List
+        / "mypage"        * MypageLocatorList.List
+        / "popup"         * PopupLocatorList.List
+        / "dummy_popup"   * DummyPopupLocatorList.List
         ;
 
     private static ImList<LocatorPlug> Plugs =

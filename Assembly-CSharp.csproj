@@ -106,6 +106,9 @@
      <Compile Include="Assets\src\view\rendering\PublicRenderer.cs" />
      <Compile Include="Assets\src\view\rendering\RenderPopups.cs" />
      <Compile Include="Assets\src\view\rendering\SelectRadioButton.cs" />
+     <Compile Include="Assets\src\view\scrolling\DragListener.cs" />
+     <Compile Include="Assets\src\view\scrolling\PageMock.cs" />
+     <Compile Include="Assets\src\view\scrolling\PageView.cs" />
      <Compile Include="Assets\src\view\spawning\ContentSpawner.cs" />
  <Reference Include="UnityEngine.UIAutomation">
  <HintPath>/Applications/Unity/Unity.app/Contents/UnityExtensions/Unity/UIAutomation/UnityEngine.UIAutomation.dll</HintPath>

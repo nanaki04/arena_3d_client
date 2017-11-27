@@ -23,15 +23,12 @@ namespace Arena.View {
     }
 
     public void SelectButton(int index) {
-      Debug.Log("select button");
       foreach (GameObject button in radioButtons) {
         var buttonComponent = button.GetComponent<Button>();
-        Debug.Log("set interactable");
         buttonComponent.interactable = true;
       }
       var activeButton = radioButtons[index];
       var activeButtonComponent = activeButton.GetComponent<Button>();
-      Debug.Log("set inactive");
       activeButtonComponent.interactable = false;
     }
 
