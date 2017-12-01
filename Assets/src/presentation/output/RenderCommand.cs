@@ -8,6 +8,8 @@ namespace Arena.Presentation {
     Delegate,
     SelectRadioButton,
     LoadContent,
+    SendPackage,
+    SendPhoenixPackage,
     Debug,
     Error
   }
@@ -54,6 +56,24 @@ namespace Arena.Presentation {
       public LoadContent(int index) {
         Index = index;
         Type = RenderCommandType.LoadContent;
+      }
+    }
+
+    public class SendPackage : RenderCommand {
+      public DataPackage dataPackage;
+
+      public SendPackage(DataPackage package) {
+        dataPackage = package;
+        Type = RenderCommandType.SendPackage;
+      }
+    }
+
+    public class SendPhoenixPackage : RenderCommand {
+      public PhoenixSocketPackage dataPackage;
+
+      public SendPhoenixPackage(PhoenixSocketPackage package) {
+        dataPackage = package;
+        Type = RenderCommandType.SendPhoenixPackage;
       }
     }
 

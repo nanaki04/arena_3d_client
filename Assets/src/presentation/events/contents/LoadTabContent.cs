@@ -1,8 +1,9 @@
-using UnityEngine;
+using System;
 using Arena.Modules;
 
 namespace Arena.Presentation {
 
+  [Serializable]
   public class LoadTabContentEvent : Event {
     public static string Type = (typeof(LoadTabContentEvent)).ToString();
     public static EventHandler Run = new EventHandler.Run(LoadTabContentEvent.Type);

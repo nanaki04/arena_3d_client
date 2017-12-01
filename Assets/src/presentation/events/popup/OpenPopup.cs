@@ -1,5 +1,8 @@
+using System;
+
 namespace Arena.Presentation {
 
+  [Serializable]
   public class OpenPopupEvent : Event {
     public static string Type = (typeof(OpenPopupEvent)).ToString();
     public static EventHandler Run = new EventHandler.Run(OpenPopupEvent.Type);

@@ -13,7 +13,8 @@ namespace Arena.View {
         { RenderCommandType.Delegate, Delegate.Render },
         { RenderCommandType.SelectRadioButton, SelectRadioButton.Render },
         { RenderCommandType.LoadContent, LoadContent.Render },
-        { RenderCommandType.RenderPopups, RenderPopups.Render }
+        { RenderCommandType.RenderPopups, RenderPopups.Render },
+        { RenderCommandType.SendPhoenixPackage, SendPhoenixPackage.Render }
       };
 
     public static void Render(GameObject gameObject, List<RenderCommand> renderData) {

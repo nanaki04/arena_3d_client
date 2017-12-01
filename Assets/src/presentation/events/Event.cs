@@ -1,7 +1,8 @@
-using UnityEngine;
+using System;
 
 namespace Arena.Presentation {
 
+  [Serializable]
   public struct EventId {
     public string Id;
     public string Spawner;
@@ -25,6 +26,7 @@ namespace Arena.Presentation {
     }
   }
 
+  [Serializable]
   public abstract class Event {
     protected EventId id;
     public EventId Id {

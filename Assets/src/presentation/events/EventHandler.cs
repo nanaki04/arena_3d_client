@@ -22,6 +22,9 @@ namespace Arena.Presentation {
   public class EventHandler : LocatorTarget {
     public static Dictionary<string, EventImplementation> EventImplementations =
       new Dictionary<string, EventImplementation>() {
+        { LoginEvent.Type, new LoginEventImplementation() },
+        { ReceivePackageEvent.Type, new ReceivePackageEventImplementation() },
+        { PollEvent.Type, new PollEventImplementation() },
         { ShowMailEvent.Type, new ShowMailEventImplementation() },
         { DebugEvent.Type, new DebugEventImplementation() },
         { PopupOverlayTickEvent.Type, new PopupOverlayTickEventImplementation() },
@@ -93,6 +96,7 @@ namespace Arena.Presentation {
         var evnt = eventImplementation.Create(eventParameters);
         var state = Store.LoadState(evnt);
         state = Store.PushProcessingEventToEventStore(state);
+        state = Store.PushProcessingEventToOutbox(state);
         var renderData = Store.GetRenderData(state);
         state = Store.ClearRenderData(state);
         state = Store.SaveState(state);

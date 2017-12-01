@@ -2,16 +2,16 @@ using System;
 using System.Collections.Generic;
 
 [Serializable]
-public struct PhoenixSocketMessage {
+public struct PhoenixSocketMessage<T> : Message {
   public string topic;
   public string @event;
   public int @ref;
-  public PhoenixSocketPayload payload;
+  public T payload;
 
   public PhoenixSocketMessage(
     string topic,
     string @event,
-    PhoenixSocketPayload payload
+    T payload
   ) {
     this.topic = topic;
     this.@event = @event;

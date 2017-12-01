@@ -1,8 +1,9 @@
-using UnityEngine;
+using System;
 using Arena.Modules;
 
 namespace Arena.Presentation {
 
+  [Serializable]
   public class RestoreRadioButtonEvent : Event {
     public static string Type = (typeof(RestoreRadioButtonEvent)).ToString();
     public static EventHandler Run = new EventHandler.Run(RestoreRadioButtonEvent.Type);

@@ -1,8 +1,9 @@
-using UnityEngine;
+using System;
 using Arena.Modules;
 
 namespace Arena.Presentation {
 
+  [Serializable]
   public class ShowMailEvent : Event {
     public static string Type = (typeof(ShowMailEvent)).ToString();
     public static EventHandler Run = new EventHandler.Run(ShowMailEvent.Type);
@@ -28,12 +29,12 @@ namespace Arena.Presentation {
     }
 
     private State PrintMessage(State state) {
-      return Store.UpdateMe("hi ", state);
+      return Store.UpdateMe("New: ", state);
     }
 
     private State Append(State state) {
       var me = Store.GetMe(state);
-      var txt = me + "lol";
+      var txt = me + "25";
       var renderCommand = new RenderCommand.Print(txt);
       return Store.PushRenderCommand(renderCommand, state);
     }

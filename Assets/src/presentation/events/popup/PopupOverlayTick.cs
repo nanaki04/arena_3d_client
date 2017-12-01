@@ -1,7 +1,8 @@
-using UnityEngine;
+using System;
 
 namespace Arena.Presentation {
 
+  [Serializable]
   public class PopupOverlayTickEvent : Event {
     public static string Type = (typeof(PopupOverlayTickEvent)).ToString();
     public static EventHandler Run = new EventHandler.Run(PopupOverlayTickEvent.Type);

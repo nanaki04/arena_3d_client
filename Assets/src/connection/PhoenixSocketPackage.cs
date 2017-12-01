@@ -1,18 +1,30 @@
 using System;
 using UnityEngine;
+using Newtonsoft.Json;
 
-[Serializable]
-public class PhoenixSocketPackage : Package<PhoenixSocketMessage> {
+public class PhoenixSocketPackage : Package {
 
-  private PhoenixSocketMessage parsed;
-  private string serialized;
+  static JsonSerializerSettings settings = new JsonSerializerSettings();
 
-  public PhoenixSocketPackage(PhoenixSocketMessage data) {
-    pack(data);
+  static PhoenixSocketPackage() {
+    settings.CheckAdditionalContent = false;
+    settings.NullValueHandling = NullValueHandling.Ignore;
+    settings.MetadataPropertyHandling = MetadataPropertyHandling.ReadAhead;
+    settings.TypeNameHandling = TypeNameHandling.Auto;
   }
 
-  public void pack(PhoenixSocketMessage data) {
-    parsed = data;
+  private string serialized;
+
+  public PhoenixSocketPackage() {
+    serialized = "";
+  }
+
+  public PhoenixSocketPackage(string serializedData) {
+    receive(serializedData);
+  }
+
+  public void pack<T>(T data) {
+    serialized = JsonConvert.SerializeObject(data, settings);
   }
 
   public void receive(string data) {
@@ -20,10 +32,10 @@ public class PhoenixSocketPackage : Package<PhoenixSocketMessage> {
   }
 
   public string serialize() {
-    return JsonUtility.ToJson(parsed);
+    return serialized;
   }
 
-  public PhoenixSocketMessage parse() {
-    return JsonUtility.FromJson<PhoenixSocketMessage>(serialized);;
+  public T parse<T>() {
+    return JsonConvert.DeserializeObject<T>(serialized, settings);
   }
 }

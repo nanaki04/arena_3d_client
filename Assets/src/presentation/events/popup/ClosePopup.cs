@@ -1,7 +1,8 @@
-using UnityEngine;
+using System;
 
 namespace Arena.Presentation {
 
+  [Serializable]
   public class ClosePopupEvent : Event {
     public static string Type = (typeof(ClosePopupEvent)).ToString();
     public static EventHandler Run = new EventHandler.Run(ClosePopupEvent.Type);

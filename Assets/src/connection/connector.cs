@@ -1,10 +1,10 @@
 using System.Collections;
 using System;
 
-public interface Connector<T> {
+public interface Connector {
   IEnumerator connect(string address);
-  void onConnected(Action<Connector<T>> onConnect);
-  void send(Package<T> message);
-  void receive(Action<Package<T>> onReceive);
+  void onConnected(Action<Connector> onConnect);
+  void send(Package package);
+  void receive(Action<Package> onReceive);
   void disconnect();
 }

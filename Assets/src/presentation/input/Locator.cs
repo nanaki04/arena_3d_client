@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using Arena.Modules;
-using UnityEngine;
 
 namespace Arena.Presentation {
 
@@ -8,6 +7,8 @@ namespace Arena.Presentation {
 
     private static ImMap<string, ImMap<string, LocatorTarget>> RegistrationList =
       Im.Map<ImMap<string, LocatorTarget>>()
+        / "player"        * PlayerLocatorList.List
+        / "package"       * PackageLocatorList.List
         / "mypage"        * MypageLocatorList.List
         / "popup"         * PopupLocatorList.List
         / "dummy_popup"   * DummyPopupLocatorList.List
@@ -15,6 +16,8 @@ namespace Arena.Presentation {
 
     private static ImList<LocatorPlug> Plugs =
       new ImList<LocatorPlug>()
+        + new PhoenixPackageAdapterPlug()
+        + new LocatorLoggerPlug()
         ;
 
     private static Locator locator = new Locator(RegistrationList, Plugs);

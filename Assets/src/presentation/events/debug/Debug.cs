@@ -1,5 +1,8 @@
+using System;
+
 namespace Arena.Presentation {
 
+  [Serializable]
   public class DebugEvent : Event {
     public static string Type = (typeof(DebugEvent)).ToString();
     public string Message;

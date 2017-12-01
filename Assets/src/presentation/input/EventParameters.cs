@@ -1,4 +1,6 @@
+using System;
 using System.Collections.Generic;
+using Arena.Modules;
 
 namespace Arena.Presentation {
 
@@ -9,6 +11,8 @@ namespace Arena.Presentation {
     Page,
     RecordsPerPage,
     Message,
+    Package,
+    PhoenixPackage,
     Popup,
     RadioButton
   }
@@ -17,10 +21,10 @@ namespace Arena.Presentation {
     public EventParameterType Type { get; set; }
 
     public static EventParameters operator +(EventParameter parameter1, EventParameter parameter2) {
-      var parameterList = new List<EventParameter>() {
-        parameter1,
-        parameter2
-      };
+      var parameterList = new ImList<EventParameter>()
+        + parameter1
+        + parameter2
+        ;  
       return new EventParameters(parameterList);
     }
 
@@ -78,6 +82,24 @@ namespace Arena.Presentation {
       }
     }
 
+    public class Package : EventParameter {
+      public DataPackage Val { get; }
+
+      public Package(DataPackage val) {
+        Val = val;
+        Type = EventParameterType.Package;
+      }
+    }
+
+    public class PhoenixPackage : EventParameter {
+      public PhoenixSocketPackage Val { get; }
+
+      public PhoenixPackage(PhoenixSocketPackage val) {
+        Val = val;
+        Type = EventParameterType.PhoenixPackage;
+      }
+    }
+
     public class Popup : EventParameter {
       public PopupType Val { get; }
 
@@ -98,20 +120,43 @@ namespace Arena.Presentation {
   }
 
   public class EventParameters {
-    public List<EventParameter> Parameters { get; }
+    public ImList<EventParameter> Parameters { get; }
+    public int Count {
+      get { return Parameters.Count; }
+    }
 
     public EventParameters() {
-      Parameters = new List<EventParameter>();
+      Parameters = new ImList<EventParameter>();
     }
 
     public EventParameters(List<EventParameter> parameters) {
+      Parameters = new ImList<EventParameter>(parameters);
+    }
+
+    public EventParameters(ImList<EventParameter> parameters) {
       Parameters = parameters;
     }
 
     public EventParameters Push(EventParameter parameter) {
-      var list = new List<EventParameter>(Parameters);
-      list.Add(parameter);
-      return new EventParameters(list);
+      return new EventParameters(Parameters + parameter);
+    }
+
+    public bool Has(EventParameterType type) {
+      return this[type] != null;
+    }
+
+    public void Each(Action<EventParameter> iterator) {
+      Im.Each(iterator, Parameters);
+    }
+
+    public EventParameters Transform(Func<EventParameter, EventParameter> transformer) {
+      return new EventParameters(Im.Transform(transformer, Parameters));
+    }
+
+    public EventParameter this[EventParameterType type] {
+      get {
+        return Im.Find((EventParameter eventParameter) => eventParameter.Type == type, Parameters);
+      }
     }
 
     public static EventParameters operator +(EventParameters parameters, EventParameter parameter) {
@@ -119,10 +164,8 @@ namespace Arena.Presentation {
     }
 
     public static EventParameters operator +(EventParameters parameters1, EventParameters parameters2) {
-      foreach (EventParameter parameter in parameters2.Parameters) {
-        parameters1 += parameter;
-      }
-      return parameters1;
+      var parameters = parameters1.Parameters * parameters2.Parameters;
+      return new EventParameters(parameters);
     }
   }
 }

@@ -1,56 +1,73 @@
 using UnityEngine;
 using System.Collections;
+using System.Net;
 using System;
 
-public class WebsocketConnector : MonoBehaviour, Connector<string> {
-  private WebSocket ws;
-  private Action<Package<string>> receiveCallback;
-  private Action<Connector<string>> connectCallback;
+public class WebSocketConnector : MonoBehaviour {
+  WebSocket socket;
+  Action<string> receiveCallback;
+  Action<WebSocketConnector> connectCallback;
 
   public IEnumerator connect(string address) {
-    Debug.Log("connected");
-    ws = new WebSocket(new Uri(address));
-    yield return StartCoroutine(ws.Connect());
+    socket = new WebSocket(new Uri(address));
+    yield return StartCoroutine(socket.Connect());
 
     if (connectCallback != null) {
       connectCallback(this);
     }
 
     while (true) {
-      string reply = ws.RecvString();
+      string reply = socket.RecvString();
 
-      if (ws.error != null) {
-        Debug.Log("Websocket error: " + ws.error);
+      if (socket.error != null) {
+        Debug.Log("WebSocket error: " + socket.error);
         break;
       }
 
-      if (reply != null && receiveCallback != null) {
-        WebsocketPackage package = new WebsocketPackage();
-        package.receive(reply);
-        receiveCallback(package);
+      if (reply != null) {
+        onMessage(reply);
       }
 
       yield return 0;
     }
 
-    ws.Close();
+    socket.Close();
   }
 
-  public void onConnected(Action<Connector<string>> onConnect) {
+  public void onConnected(Action<WebSocketConnector> onConnect) {
     connectCallback += onConnect;
   }
 
-  public void send(Package<string> message) {
-    Debug.Log("send message: " + message.serialize());
-    ws.SendString(message.serialize());
+  public void send(string message) {
+    socket.SendString(message);
   }
 
-  public void receive(Action<Package<string>> onReceive) {
-    Debug.Log("set receive handler");
+  public void receive(Action<string> onReceive) {
     receiveCallback += onReceive;
   }
 
   public void disconnect() {
-    Debug.Log("disconnected");
+    socket.Close();
   }
+
+  private void onOpen(object sender, EventArgs args) {
+    if (connectCallback != null) {
+      connectCallback(this);
+    }
+  }
+
+  private void onClose() {
+    // TODO
+  }
+
+  private void onError() {
+    // TODO
+  }
+
+  private void onMessage(string reply) {
+    if (receiveCallback != null) {
+      receiveCallback(reply);
+    }
+  }
+
 }

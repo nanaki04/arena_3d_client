@@ -1,8 +1,9 @@
-using UnityEngine;
+using System;
 using Arena.Modules;
 
 namespace Arena.Presentation {
 
+  [Serializable]
   public class SelectRadioButtonEvent : Event {
     public static string Type = (typeof(SelectRadioButtonEvent)).ToString();
     public static EventHandler Run = new EventHandler.Run(SelectRadioButtonEvent.Type);

@@ -1,19 +1,29 @@
 using System.Collections.Generic;
 using System;
-using UnityEngine;
 using Arena.Modules;
 
 namespace Arena.Presentation {
 
+  public interface StorePlug {
+    State TransformOnLoad(State state);
+    State TransformOnSave(State state);
+  }
+
   public static class Store {
     private static State ActiveState = State.InitialState();
 
+    private static ImList<StorePlug> Plugs =
+      new ImList<StorePlug>()
+        + new StateLoggerPlug()
+        ;
+
     public static State LoadState(Event processing) {
-      return UpdateProcessing(processing, ActiveState);
+      var state = UpdateProcessing(processing, ActiveState);
+      return Im.Fold<StorePlug, State>((State acc, StorePlug plug) => plug.TransformOnLoad(acc), state, Plugs);
     }
 
     public static State SaveState(State state) {
-      ActiveState = state;
+      ActiveState = Im.Fold<StorePlug, State>((State acc, StorePlug plug) => plug.TransformOnSave(acc), state, Plugs);
       return ActiveState;
     }
 
@@ -41,9 +51,14 @@ namespace Arena.Presentation {
       return state.ActiveEventStore;
     }
 
-    public static List<Event> GetEventStoreList(State state) {
+    public static ImList<Event> GetEventStoreList(State state) {
       var eventStore = GetEventStore(state);
-      return new List<Event>(eventStore.Store);
+      return eventStore.Store;
+    }
+
+    public static ImList<Event> GetEventStoreOutbox(State state) {
+      var eventStore = GetEventStore(state);
+      return eventStore.Outbox;
     }
 
     public static List<EventArchive> GetEventArchive(State state) {
@@ -91,9 +106,15 @@ namespace Arena.Presentation {
       return state;
     }
 
-    public static State UpdateEventStoreList(List<Event> eventStoreList, State state) {
+    public static State UpdateEventStoreList(ImList<Event> eventStoreList, State state) {
       var eventStore = GetEventStore(state);
       eventStore.Store = eventStoreList;
+      return UpdateEventStore(eventStore, state);
+    }
+
+    public static State UpdateEventStoreOutbox(ImList<Event> eventStoreOutbox, State state) {
+      var eventStore = GetEventStore(state);
+      eventStore.Outbox = eventStoreOutbox;
       return UpdateEventStore(eventStore, state);
     }
 
@@ -157,13 +178,24 @@ namespace Arena.Presentation {
 
     public static State PushEventToEventStore(Event evnt, State state) {
       var eventStoreList = GetEventStoreList(state);
-      eventStoreList.Add(evnt);
+      eventStoreList += evnt;
       return UpdateEventStoreList(eventStoreList, state);
     }
 
     public static State PushProcessingEventToEventStore(State state) {
       var evnt = GetProcessing(state);
       return PushEventToEventStore(evnt, state);
+    }
+
+    public static State PushEventToOutbox(Event evnt, State state) {
+      var eventStoreOutbox = GetEventStoreOutbox(state);
+      eventStoreOutbox += evnt;
+      return UpdateEventStoreOutbox(eventStoreOutbox, state);
+    }
+
+    public static State PushProcessingEventToOutbox(State state) {
+      var evnt = GetProcessing(state);
+      return PushEventToOutbox(evnt, state);
     }
 
     public static State PushOpenPopup(PopupType popupType, State state) {
