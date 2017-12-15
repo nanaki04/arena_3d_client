@@ -44,8 +44,8 @@ namespace Arena.Presentation {
         Origin = origin;
       }
 
-      public override List<RenderCommand> Handle(EventParameters eventParameters) {
-        eventParameters.Each((EventParameter eventParameter) => Logger.Log(eventParameter.Type.ToString()));
+      public override ImList<RenderCommand> Handle(EventParameters eventParameters) {
+        eventParameters.Each((EventParameter eventParameter) => Logger.Log("Event Parameter: " + eventParameter.Type.ToString()));
         var renderCommandList = Origin.Handle(eventParameters);
 
         return renderCommandList;

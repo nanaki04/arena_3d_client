@@ -22,6 +22,7 @@ namespace Arena.Presentation {
   public class EventHandler : LocatorTarget {
     public static Dictionary<string, EventImplementation> EventImplementations =
       new Dictionary<string, EventImplementation>() {
+        { RequestCredentialsEvent.Type, new RequestCredentialsEventImplementation() },
         { LoginEvent.Type, new LoginEventImplementation() },
         { ReceivePackageEvent.Type, new ReceivePackageEventImplementation() },
         { PollEvent.Type, new PollEventImplementation() },
@@ -32,7 +33,8 @@ namespace Arena.Presentation {
         { SelectRadioButtonEvent.Type, new SelectRadioButtonEventImplementation() },
         { RestoreRadioButtonEvent.Type, new RestoreRadioButtonEventImplementation() },
         { LoadTabContentEvent.Type, new LoadTabContentEventImplementation() },
-        { ClosePopupEvent.Type, new ClosePopupEventImplementation() }
+        { ClosePopupEvent.Type, new ClosePopupEventImplementation() },
+        { VerifyProgressEvent.Type, new VerifyProgressEventImplementation() },
       };
 
     protected EventHandlerType type;
@@ -44,8 +46,8 @@ namespace Arena.Presentation {
       get { return targetEventType; }
     }
 
-    public virtual List<RenderCommand> Handle(EventParameters eventParameters) {
-      return new List<RenderCommand>();
+    public virtual ImList<RenderCommand> Handle(EventParameters eventParameters) {
+      return new ImList<RenderCommand>();
     }
 
     public class Run : EventHandler {
@@ -54,17 +56,22 @@ namespace Arena.Presentation {
         type = EventHandlerType.Run;
       }
 
-      public override List<RenderCommand> Handle(EventParameters eventParameters) {
+      public override ImList<RenderCommand> Handle(EventParameters eventParameters) {
         if (!EventImplementations.ContainsKey(targetEventType)) {
-          return new List<RenderCommand>();
+          Logger.Log("unmatched event type: " + targetEventType.ToString());
+          return new ImList<RenderCommand>();
         }
+
         var eventImplementation = EventImplementations[targetEventType];
         var evnt = eventImplementation.Create(eventParameters);
         var state = Store.LoadState(evnt);
+        evnt.SetSpawner(Store.GetMe(state));
         state = eventImplementation.Handle(state);
+
         var renderData = Store.GetRenderData(state);
         state = Store.ClearRenderData(state);
         state = Store.SaveState(state);
+
         return renderData;
       }
     }
@@ -77,7 +84,7 @@ namespace Arena.Presentation {
         type = EventHandlerType.RunFactory;
       }
 
-      public override List<RenderCommand> Handle(EventParameters eventParameters) {
+      public override ImList<RenderCommand> Handle(EventParameters eventParameters) {
         return base.Handle(CurriedParameters + eventParameters);
       }
     }
@@ -88,18 +95,22 @@ namespace Arena.Presentation {
         type = EventHandlerType.Stock;
       }
 
-      public override List<RenderCommand> Handle(EventParameters eventParameters) {
+      public override ImList<RenderCommand> Handle(EventParameters eventParameters) {
         if (!EventImplementations.ContainsKey(targetEventType)) {
-          return new List<RenderCommand>();
+          return new ImList<RenderCommand>();
         }
+
         var eventImplementation = EventImplementations[targetEventType];
         var evnt = eventImplementation.Create(eventParameters);
         var state = Store.LoadState(evnt);
+        evnt.SetSpawner(Store.GetMe(state));
         state = Store.PushProcessingEventToEventStore(state);
         state = Store.PushProcessingEventToOutbox(state);
+
         var renderData = Store.GetRenderData(state);
         state = Store.ClearRenderData(state);
         state = Store.SaveState(state);
+
         return renderData;
       }
     }
@@ -112,7 +123,7 @@ namespace Arena.Presentation {
         type = EventHandlerType.StockFactory;
       }
 
-      public override List<RenderCommand> Handle(EventParameters eventParameters) {
+      public override ImList<RenderCommand> Handle(EventParameters eventParameters) {
         return base.Handle(CurriedParameters + eventParameters);
       }
     }

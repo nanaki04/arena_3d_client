@@ -15,11 +15,12 @@ namespace Arena.Presentation {
   public class DebugEventImplementation : EventImplementation {
     public DebugEventImplementation() {
       Composition = EventComposition.EventComposer
-        + PrintMessage;
+        + PrintMessage
+        ;
     }
 
     public override Event Create(EventParameters eventParameters) {
-      var eventId = EventId.InitialState();
+      var eventId = EventId.Generate();
       return new DebugEvent(eventId, "TODO");
     }
 

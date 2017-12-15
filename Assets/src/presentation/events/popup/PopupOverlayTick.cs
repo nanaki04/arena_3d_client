@@ -18,7 +18,7 @@ namespace Arena.Presentation {
     }
 
     public override Event Create(EventParameters eventParameters) {
-      var eventId = EventId.InitialState();
+      var eventId = EventId.Generate();
       return new PopupOverlayTickEvent(eventId);
     }
 

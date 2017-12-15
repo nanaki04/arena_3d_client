@@ -25,7 +25,7 @@ namespace Arena.Presentation {
     }
 
     public override Event Create(EventParameters eventParameters) {
-      var eventId = EventId.InitialState();
+      var eventId = EventId.Generate();
       var id = eventParameters.Parameters[0] as EventParameter.Id;
       return new LoadTabContentEvent(eventId, id.Val);
     }

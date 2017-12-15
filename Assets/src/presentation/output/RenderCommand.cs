@@ -3,6 +3,8 @@ using System.Collections.Generic;
 namespace Arena.Presentation {
 
   public enum RenderCommandType {
+    Connect,
+    Disconnect,
     Print,
     RenderPopups,
     Delegate,
@@ -16,6 +18,28 @@ namespace Arena.Presentation {
 
   public abstract class RenderCommand {
     public RenderCommandType Type { get; set; }
+
+    public class Connect : RenderCommand {
+      public string Identification { get; }
+      public string Token { get; }
+
+      public Connect(string identification) {
+        Identification = identification;
+        Type = RenderCommandType.Connect;
+      }
+
+      public Connect(string identification, string token) {
+        Identification = identification;
+        Token = token;
+        Type = RenderCommandType.Connect;
+      }
+    }
+
+    public class Disconnect : RenderCommand {
+      public Disconnect() {
+        Type = RenderCommandType.Disconnect;
+      }
+    }
 
     public class Print : RenderCommand {
       public string Text { get; }

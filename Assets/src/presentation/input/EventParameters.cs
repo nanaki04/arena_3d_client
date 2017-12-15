@@ -6,6 +6,7 @@ namespace Arena.Presentation {
 
   public enum EventParameterType {
     Id,
+    Password,
     KeyCode,
     Index,
     Page,
@@ -34,6 +35,15 @@ namespace Arena.Presentation {
       public Id(string val) {
         Val = val;
         Type = EventParameterType.Id;
+      }
+    }
+
+    public class Password : EventParameter {
+      public string Val { get; }
+
+      public Password(string val) {
+        Val = val;
+        Type = EventParameterType.Password;
       }
     }
 

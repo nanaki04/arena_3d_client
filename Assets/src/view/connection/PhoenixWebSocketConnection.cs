@@ -7,24 +7,27 @@ using Arena.Presentation;
 namespace Arena.View {
 
   public class PhoenixWebSocketConnection : MonoBehaviour {
-    public const string serverAddress = "ws://localhost:4000/socket/websocket?vsn=1.0.0";
-
     private Connector connector;
     private LocatorEvent locatorEvent;
 
     public IEnumerator Start() {
       var domainRoot = gameObject.AddComponent<DomainRoot>();
       domainRoot.domain = "package";
-
       locatorEvent = gameObject.AddComponent<LocatorEvent>();
-      locatorEvent.address = "receive";
 
       var webSocketConnector = gameObject.AddComponent<WebSocketConnector>() as WebSocketConnector;
       connector = new PhoenixSocketConnector(webSocketConnector);
       connector.onConnected(onConnect);
       connector.receive(onReceive);
+
       enabled = false;
-      yield return connector.connect(serverAddress);
+
+      var caller = gameObject.GetComponent<Caller>();
+      yield return connector.connect(caller.ServerAddress);
+    }
+
+    public void OnDestroy() {
+      connector.disconnect();
     }
 
     public void Update() {
@@ -55,7 +58,7 @@ namespace Arena.View {
     private void onConnect(Connector phoenixSocketConnector) {
       // TODO move to presentation layer
       var phoenixSocketMessage = new PhoenixSocketMessage<PhoenixSocketPayload>(
-        "lobby:global",
+        "duelist",
         "phx_join",
         new PhoenixSocketPayload()
       );

@@ -12,6 +12,7 @@ namespace Arena.Presentation {
         / "mypage"        * MypageLocatorList.List
         / "popup"         * PopupLocatorList.List
         / "dummy_popup"   * DummyPopupLocatorList.List
+        / "login_popup"   * LoginPopupLocatorList.List
         ;
 
     private static ImList<LocatorPlug> Plugs =
@@ -22,7 +23,7 @@ namespace Arena.Presentation {
 
     private static Locator locator = new Locator(RegistrationList, Plugs);
 
-    public static List<RenderCommand> Dispatch(string domain, string address, EventParameters eventParameters) {
+    public static ImList<RenderCommand> Dispatch(string domain, string address, EventParameters eventParameters) {
       var eventHandler = locator.Locate(domain, address) as EventHandler;
       return eventHandler.Handle(eventParameters);
     }

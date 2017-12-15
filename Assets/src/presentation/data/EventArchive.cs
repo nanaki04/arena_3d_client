@@ -1,14 +1,15 @@
 using System.Collections.Generic;
+using Arena.Modules;
 
 namespace Arena.Presentation {
 
   public struct EventArchive {
-    public List<Event> Archive;
+    public ImList<Event> Archive;
     public float ArchivedUntil;
     public GameState Snapshot;
 
     public EventArchive(
-      List<Event> archive,
+      ImList<Event> archive,
       float archivedUntil,
       GameState snapshot
     ) {
@@ -19,7 +20,7 @@ namespace Arena.Presentation {
 
     public static EventArchive InitialState() {
       return new EventArchive(
-        new List<Event>(),
+        new ImList<Event>(),
         0.0f,
         GameState.InitialState()
       );

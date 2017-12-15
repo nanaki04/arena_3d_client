@@ -19,8 +19,16 @@ namespace Arena.Modules {
       list = lst;
     }
 
+    public ImList(T item) {
+      list = new List<T>() { item };
+    }
+
     public List<T> GetList() {
       return new List<T>(list);
+    }
+
+    public bool Has(T item) {
+      return list.Contains(item);
     }
 
     public override string ToString() {
@@ -50,6 +58,14 @@ namespace Arena.Modules {
       var lst = imList.GetList();
       lst.Remove(item);
       return new ImList<T>(lst);
+    }
+
+    public static ImList<T> operator &(ImList<T> imList, Func<ImList<T>, ImList<T>> curry) {
+      return curry(imList);
+    }
+
+    public static bool operator !(ImList<T> imList) {
+      return imList.Count == 0;
     }
   }
 
@@ -173,12 +189,100 @@ namespace Arena.Modules {
       return default(T);
     }
 
+    public static bool Has<T>(T item, ImList<T> list) {
+      return list.Has(item);
+    }
+
     public static ImList<T> Transform<T>(Func<T, T> iterator, ImList<T> list) {
       var transformedList = Im.Fold<T, List<T>>((List<T> acc, T item) => {
         acc.Insert(0, iterator(item));
         return acc;
       }, new List<T>(), list);
       return new ImList<T>(transformedList);
+    }
+
+    public static Func<ImList<T>, ImList<T>> Transform<T>(Func<T, T> iterator) {
+      return Curry<Func<T, T>, ImList<T>, ImList<T>>.New(Transform)(iterator);
+    }
+
+    public static ImList<T> Sort<T>(ImList<T> list) {
+      var lst = list.GetList();
+      lst.Sort();
+      return new ImList<T>(lst);
+    }
+
+    public static ImList<T> Uniq<T>(ImList<T> list) {
+      return Fold((acc, item) => AddNew(item, acc), new ImList<T>(), list);
+    }
+
+    public static ImList<T> AddNew<T>(T item, ImList<T> list) {
+      if (list.Has(item)) {
+        return list;
+      }
+      return list + item;
+    }
+
+    public static ImList<T> Replace<T>(Func<T, bool> predicate, T newItem, ImList<T> list) {
+      for (int x = 0; x < list.Count; x++) {
+        if (predicate(list[x])) {
+          var lst = list.GetList();
+          lst[x] = newItem;
+          return new ImList<T>(lst);
+        }
+      }
+      return list + newItem;
+    }
+
+    public static ImList<T> Overlay<T>(Func<T, T, bool> predicate, ImList<T> list1, ImList<T> list2) {
+      return Fold((acc, item) => Replace((item1) => predicate(item1, item), item, acc), list1, list2);
+    }
+
+    public static Func<ImList<T>, ImList<T>> Overlay<T>(Func<T, T, bool> predicate, ImList<T> list1) {
+      return Curry<Func<T, T, bool>, ImList<T>, ImList<T>, ImList<T>>.New(Overlay)(predicate)(list1);
+    }
+
+    public static T Head<T>(ImList<T> list) {
+      return list[0];
+    }
+
+    public static ImList<T> Tail<T>(ImList<T> list) {
+      var lst = list.GetList();
+      lst.RemoveAt(0);
+      return new ImList<T>(lst);
+    }
+
+    public static T Last<T>(ImList<T> list) {
+      var count = list.Count;
+      return list[count - 1];
+    }
+
+    public static T Maybe<K, V, T>(Func<V, K, T> action, K key, ImMap<K, V> map) {
+      if (!map.Has(key)) {
+        return default(T);
+      }
+      return action(map[key], key);
+    }
+
+    public static T Maybe<V, T>(Func<V, string, T> action, string key, ImMap<string, V> map) {
+      return Maybe<string, V, T>(action, key, map);
+    }
+
+    public static void Maybe<K, V>(Action<V, K> action, K key, ImMap<K, V> map) {
+      if (!map.Has(key)) {
+        return;
+      }
+      action(map[key], key);
+    }
+
+    public static void Maybe<V>(Action<V, string> action, string key, ImMap<string, V> map) {
+      Maybe<string, V>(action, key, map);
+    }
+
+    public static R Maybe<T, R>(Func<T, R> action, T item, R def, ImList<T> list) {
+      if (list.Has(item)) {
+        return action(item);
+      }
+      return def;
     }
 
   }

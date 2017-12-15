@@ -13,14 +13,14 @@ namespace Arena.Presentation {
   public class ShowMailEventImplementation : EventImplementation {
     public ShowMailEventImplementation() {
       Composition = EventComposition.EventComposer
-        + Store.Curry<PopupType>(Store.PushOpenPopup, PopupType.Dummy)
+        + Store.Curry(Store.PushOpenPopup, PopupType.Dummy)
         + PrintMessage
         + Append
         ;
     }
 
     public override Event Create(EventParameters eventParameters) {
-      var eventId = EventId.InitialState();
+      var eventId = EventId.Generate();
       return new ShowMailEvent(eventId);
     }
 

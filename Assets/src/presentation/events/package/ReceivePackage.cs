@@ -20,30 +20,26 @@ namespace Arena.Presentation {
   public class ReceivePackageEventImplementation : EventImplementation {
     public ReceivePackageEventImplementation() {
       Composition = EventComposition.EventComposer
-        + PushEventStore
+        + EventF.UpdateEventStoreProgress(state => ThisEvent(state).Progress)
+        + EventF.SpawnVerifyProgressEvent
+        + EventF.OverlayOnEventStoreList(state => ThisEvent(state).Events)
+        + EventF.UnpackEventArchivesInRange(EventF.GetEventStoreOldestSpawnTime)
         ;
     }
 
     public override Event Create(EventParameters eventParameters) {
-      var eventId = EventId.InitialState();
-      DataPackage package = (eventParameters.Parameters[0] as EventParameter.Package).Val;
+      var eventId = EventId.Generate();
+      DataPackage package = (eventParameters[EventParameterType.Package] as EventParameter.Package).Val;
       var progress = package.Payload.Progress;
       var events = package.Payload.Events;
 
       return new ReceivePackageEvent(eventId, progress, events);
     }
 
-    private State PushEventStore(State state) {
-      var evnt = Store.GetProcessing(state) as ReceivePackageEvent;
-      var eventStore = Store.GetEventStore(state);
-
-      // TODO overwrite duplicates
-      var eventStoreList = evnt.Events * eventStore.Store;
-      eventStore.ProgressId = evnt.Progress;
-      eventStore.Store = eventStoreList;
-
-      return Store.UpdateEventStore(eventStore, state);
+    private ReceivePackageEvent ThisEvent(State state) {
+      return Store.GetProcessing(state) as ReceivePackageEvent;
     }
+
   }
 
 }

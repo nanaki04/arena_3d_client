@@ -15,6 +15,7 @@ namespace Arena.Presentation {
     private static ImList<StorePlug> Plugs =
       new ImList<StorePlug>()
         + new StateLoggerPlug()
+        + new PopupLoggerPlug()
         ;
 
     public static State LoadState(Event processing) {
@@ -35,7 +36,7 @@ namespace Arena.Presentation {
       return Curry<T1, T2, State, State>.New(handler)(arg1)(arg2);
     }
 
-    public static List<RenderCommand> GetRenderData(State state) {
+    public static ImList<RenderCommand> GetRenderData(State state) {
       return state.RenderData;
     }
 
@@ -61,8 +62,12 @@ namespace Arena.Presentation {
       return eventStore.Outbox;
     }
 
-    public static List<EventArchive> GetEventArchive(State state) {
-      return new List<EventArchive>(state.EventArchives);
+    public static string GetEventStoreProgress(State state) {
+      return GetEventStore(state).ProgressId;
+    }
+
+    public static ImList<EventArchive> GetEventArchive(State state) {
+      return state.EventArchives;
     }
 
     public static GameState GetGameState(State state) {
@@ -101,6 +106,10 @@ namespace Arena.Presentation {
       return state;
     }
 
+    public static Func<State, State> UpdateProcessing(Event processing) {
+      return Curry<Event, State, State>.New(UpdateProcessing)(processing);
+    }
+
     public static State UpdateEventStore(EventStore eventStore, State state) {
       state.ActiveEventStore = eventStore;
       return state;
@@ -112,15 +121,29 @@ namespace Arena.Presentation {
       return UpdateEventStore(eventStore, state);
     }
 
+    public static Func<State, State> UpdateEventStoreList(ImList<Event> eventStoreList) {
+      return Curry<ImList<Event>, State, State>.New(UpdateEventStoreList)(eventStoreList);
+    }
+
     public static State UpdateEventStoreOutbox(ImList<Event> eventStoreOutbox, State state) {
       var eventStore = GetEventStore(state);
       eventStore.Outbox = eventStoreOutbox;
       return UpdateEventStore(eventStore, state);
     }
 
-    public static State UpdateEventArchives(List<EventArchive> eventArchives, State state) {
+    public static State UpdateEventStoreProgress(string progress, State state) {
+      var eventStore = GetEventStore(state);
+      eventStore.ProgressId = progress;
+      return UpdateEventStore(eventStore, state);
+    }
+
+    public static State UpdateEventArchives(ImList<EventArchive> eventArchives, State state) {
       state.EventArchives = eventArchives;
       return state;
+    }
+
+    public static Func<State, State> UpdateEventArchives(ImList<EventArchive> eventArchives) {
+      return Curry<ImList<EventArchive>, State, State>.New(UpdateEventArchives)(eventArchives);
     }
 
     public static State UpdateGameState(GameState gameState, State state) {
@@ -128,18 +151,22 @@ namespace Arena.Presentation {
       return state;
     }
 
+    public static Func<State, State> UpdateGameState(GameState gameState) {
+      return Curry<GameState, State, State>.New(UpdateGameState)(gameState);
+    }
+
     public static State UpdateUIState(UIState uiState, State state) {
       state.CurrentUIState = uiState;
       return state;
     }
 
-    public static State UpdateRenderData(List<RenderCommand> renderData, State state) {
+    public static State UpdateRenderData(ImList<RenderCommand> renderData, State state) {
       state.RenderData = renderData;
       return state;
     }
 
     public static State ClearRenderData(State state) {
-      return UpdateRenderData(new List<RenderCommand>(), state);
+      return UpdateRenderData(new ImList<RenderCommand>(), state);
     }
 
     public static State UpdateOpenPopups(List<PopupType> openPopups, State state) {
@@ -208,8 +235,7 @@ namespace Arena.Presentation {
     }
 
     public static State PushRenderCommand(RenderCommand renderCommand, State state) {
-      var renderData = GetRenderData(state);
-      renderData.Add(renderCommand);
+      var renderData = GetRenderData(state) + renderCommand;
       return UpdateRenderData(renderData, state);
     }
 

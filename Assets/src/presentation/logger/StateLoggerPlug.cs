@@ -39,24 +39,24 @@ namespace Arena.Presentation {
       var eventStoreListAdded = eventStoreAfter.Store / eventStoreBefore.Store;
       if (eventStoreListRemoved.Count > 0) {
         Logger.Log("removed events:");
-        Im.Each((evnt) => Logger.Log(evnt.GetType().ToString()), eventStoreListRemoved);
+        Im.Each(LogEvent, eventStoreListRemoved);
       }
 
       if (eventStoreListAdded.Count > 0) {
         Logger.Log("added events:");
-        Im.Each((evnt) => Logger.Log(evnt.GetType().ToString()), eventStoreListAdded);
+        Im.Each(LogEvent, eventStoreListAdded);
       }
 
       var outboxRemoved = eventStoreBefore.Outbox / eventStoreAfter.Outbox;
       var outboxAdded = eventStoreAfter.Outbox / eventStoreBefore.Outbox;
       if (outboxRemoved.Count > 0) {
         Logger.Log("removed events from outbox:");
-        Im.Each((evnt) => Logger.Log(evnt.GetType().ToString()), outboxRemoved);
+        Im.Each(LogEvent, outboxRemoved);
       }
 
       if (outboxAdded.Count > 0) {
         Logger.Log("added events to outbox:");
-        Im.Each((evnt) => Logger.Log(evnt.GetType().ToString()), outboxAdded);
+        Im.Each(LogEvent, outboxAdded);
       }
 
       if (LogLevel != StateEventLogLevel.Full) {
@@ -65,14 +65,18 @@ namespace Arena.Presentation {
 
       if (eventStoreListRemoved.Count > 0 || eventStoreListAdded.Count > 0) {
         Logger.Log("event store");
-        Im.Each((evnt) => Logger.Log(evnt.GetType().ToString()), eventStoreAfter.Store);
+        Im.Each(LogEvent, eventStoreAfter.Store);
       }
 
       if (outboxRemoved.Count > 0 || outboxAdded.Count > 0) {
         Logger.Log("event outbox");
-        Im.Each((evnt) => Logger.Log(evnt.GetType().ToString()), eventStoreAfter.Outbox);
+        Im.Each(LogEvent, eventStoreAfter.Outbox);
       }
 
+    }
+
+    private void LogEvent(Event evnt) {
+      Logger.Log(evnt.GetType().ToString() + ": " + evnt.Id.Id + ":" + evnt.Id.Spawner);
     }
 
   }

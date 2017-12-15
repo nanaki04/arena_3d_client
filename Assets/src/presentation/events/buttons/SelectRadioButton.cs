@@ -29,7 +29,7 @@ namespace Arena.Presentation {
     }
 
     public override Event Create(EventParameters eventParameters) {
-      var eventId = EventId.InitialState();
+      var eventId = EventId.Generate();
       var id = eventParameters.Parameters[0] as EventParameter.Id;
       var index = eventParameters.Parameters[1] as EventParameter.RadioButton;
       return new SelectRadioButtonEvent(eventId, id.Val, index.Val);

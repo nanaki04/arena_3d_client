@@ -21,10 +21,10 @@ namespace Arena.Presentation {
     }
 
     public override Event Create(EventParameters eventParameters) {
-      var eventId = EventId.InitialState();
+      var eventId = EventId.Generate();
       var popupType = PopupType.Undefined;
       if (eventParameters.Parameters.Count > 0) {
-        popupType = (eventParameters.Parameters[0] as EventParameter.Popup).Val;
+        popupType = (eventParameters[EventParameterType.Popup] as EventParameter.Popup).Val;
       }
       return new ClosePopupEvent(eventId, popupType);
     }

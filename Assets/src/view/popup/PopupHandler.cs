@@ -8,7 +8,8 @@ namespace Arena.View {
   public class PopupHandler : MonoBehaviour {
     static Dictionary<PopupType, string> Paths =
       new Dictionary<PopupType, string>() {
-        { PopupType.Dummy, "popups/DummyPopup" }
+        { PopupType.Dummy, "popups/DummyPopup" },
+        { PopupType.Login, "popups/LoginPopup" },
       };
 
     public GameObject PopupOverlay;

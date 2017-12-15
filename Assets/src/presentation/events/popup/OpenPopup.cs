@@ -21,8 +21,8 @@ namespace Arena.Presentation {
     }
 
     public override Event Create(EventParameters eventParameters) {
-      var eventId = EventId.InitialState();
-      var popupType = (eventParameters.Parameters[0] as EventParameter.Popup).Val;
+      var eventId = EventId.Generate();
+      var popupType = (eventParameters[EventParameterType.Popup] as EventParameter.Popup).Val;
       return new OpenPopupEvent(eventId, popupType);
     }
 

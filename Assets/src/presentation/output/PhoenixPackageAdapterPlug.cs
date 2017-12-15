@@ -21,21 +21,16 @@ namespace Arena.Presentation {
       }
 
       // TODO think about how to improve performance
-      public override List<RenderCommand> Handle(EventParameters eventParameters) {
+      public override ImList<RenderCommand> Handle(EventParameters eventParameters) {
         var transformedParameters = TransformEventParameters(eventParameters);
         var renderCommandList = Origin.Handle(transformedParameters);
-
-        for (int i = 0; i < renderCommandList.Count; i++) {
-          var renderCommand = renderCommandList[i];
-          if (renderCommand.Type == RenderCommandType.SendPackage) {
-            renderCommandList[i] = TransformPackage(renderCommand);
-          }
-        }
-
-        return renderCommandList;
+        return Im.Transform(TransformPackage, renderCommandList);
       }
 
       private RenderCommand TransformPackage(RenderCommand renderCommand) {
+        if (renderCommand.Type != RenderCommandType.SendPackage) {
+          return renderCommand;
+        }
         var package = (renderCommand as RenderCommand.SendPackage).dataPackage;
         var phoenixPackage = PhoenixPackageAdapter.Transform(package);
 

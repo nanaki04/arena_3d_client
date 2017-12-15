@@ -20,7 +20,7 @@ namespace Arena.Presentation {
     }
 
     public override Event Create(EventParameters eventParameters) {
-      var eventId = EventId.InitialState();
+      var eventId = EventId.Generate();
       return new PollEvent(eventId);
     }
 
@@ -38,7 +38,7 @@ namespace Arena.Presentation {
 
       var package = new DataPackage();
       // TODO
-      package.Path = "lobby:global";
+      package.Path = "duelist";
       package.Method = "push";
       package.Payload = payload;
 
